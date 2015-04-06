@@ -9,32 +9,52 @@
     <script src="jquery-1.11.2.js"></script>
 </head>
 
-<body>
+<body onload="download()">
 
 <div class="main">
-    <table class="main" id="spice">
+    <table class="main" id="main_table">
+        <tbody>
         <tr>
-            <th class="main">Header1</th>
-            <th class="main">Header2</th>
+            <th class="main">Type</th>
+            <th class="main">Data</th>
+            <th class="main">Change</th>
         </tr>
         <tr>
             <td class="cell">Cell1</td>
             <td class="cell">Cell2</td>
+            <td class="delete" onclick="delete_tr(this)">Delete</td>
         </tr>
         <tr>
             <td class="cell">Cell3</td>
             <td class="cell">Cell4</td>
+            <td class="delete" onclick="delete_tr(this)">Delete</td>
         </tr>
         <tr>
             <td class="cell">Cell5</td>
             <td class="cell">Cell6</td>
+            <td class="delete" onclick="delete_tr(this)">Delete</td>
         </tr>
+        <tr>
+            <td class="cell">
+                <label>
+                <select class="type_select" onchange="type_changed()">
+                    <option value="Integer">Integer</option>
+                    <option value="String">String</option>
+                    <option value="From List">From List</option>
+                </select>
+                </label>
+            </td>
+            <td class="cell">
+                <label id="for_input">
+                    <input type="text" class="input_data" placeholder="Enter your data">
+                </label>
+            </td>
+            <td class="add" onclick="delete_tr(this)">Add</td>
+        </tr>
+        </tbody>
     </table>
 </div>
-<!--<form>-->
-<!--<button type="button" onclick="load_clicked()" name="to_server">Upload table</button>-->
-<!--</form>-->
-<div class="load" onclick="download()">
+<div class="load" onclick="upload()">
     Load table
 </div>
 

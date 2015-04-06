@@ -1,56 +1,19 @@
-
-function load_clicked() {
-    //$.ajax({
-    //    type: "POST",
-    //    url: "http://localhost/WebDesignLab3/php.php", //Relative or absolute path to response.php file
-    //    complete: function () {
-    //        alert('Uploaded!')
-    //    }
-    //});
-
-    $.ajax({
-        type: "POST",
-        url: "http://localhost/WebDesignLab3/php.php",
-        data: '123',
-        success: function (data) {
-            alert('success');
-            return false;
-        }
-    });
-}
-
-
 function download() {
-    var file_name = 'input.xml';
+    var file_name = 'data.xml';
     $.ajax({
         url: file_name,
         dataType: "text",
         success: function (data) {
-            $("#spice").empty();
-            $("#spice").append(data);
+            var _table =  $("#main_table");
+            _table.empty();
+            _table.append(data);
         }
     })
 }
 
-function upload() {
-    //xhttp=new XMLHttpRequest();
-    //xhttp.open("GET","input.xml",false);
-    //xhttp.send();
-    ////return xhttp.responseXML;
-    //
-    //xmlDoc = xhttp.responseXML;
-    ////xmlDoc=loadXMLDoc("input.xml");
-    //
-    //newel=xmlDoc.createElement("edition");
-    //x = "abcd";
-    ////x=xmlDoc.getElementsByTagName("book")[0];
-    //x.appendChild(newel);
-    //
-    //document.write(x.getElementsByTagName("CATALOG")[0].nodeName);
 
-    //var x = 1;
+function upload() {
     var xmlDoc = document.getElementsByTagName('table')[0].innerHTML;
-    //var xmlDoc = "123456";
 
     var post_data = {
         'file_data': xmlDoc
@@ -60,11 +23,52 @@ function upload() {
         type: "POST",
         url: "http://localhost/WebDesignLab3/php.php",
         data: post_data,
-        success: function (data) {
-            alert('success');
+        success: function () {
+            //alert('success');
             return false;
         }
     });
+}
 
 
+function delete_tr(obj) {
+    var idx = obj.parentNode.rowIndex;
+    $('table')[0].deleteRow(idx);
+    upload();
+}
+
+
+var list_for_select = ["USA", "UK", "Germany", "Italy", "Japan", "France", "Canada", "Ukraine"];
+
+
+function type_changed() {
+    var input_label = $('#for_input')[0];
+    var type = $('.type_select')[0];
+
+    input_label.removeChild(input_label.childNodes[1]);
+    var firstChild = input_label.childNodes[1];
+    input_label.removeChild(input_label.childNodes[1]);
+
+    if (type.value == 'From List') {
+
+        var selectList = document.createElement("select");
+
+        for (var i = 0; i < list_for_select.length; i++) {
+            var option = document.createElement("option");
+            option.value = list_for_select[i];
+            option.text = list_for_select[i];
+            selectList.appendChild(option);
+        }
+        selectList.className = 'type_select';
+        input_label.appendChild(selectList);
+
+    }
+    else {
+        var inputField = document.createElement("input");
+        inputField.type = 'text';
+        inputField.className = 'input_data';
+        inputField.placeholder = 'Enter your data';
+        input_label.appendChild(inputField);
+    }
+    input_label.appendChild(firstChild);
 }
