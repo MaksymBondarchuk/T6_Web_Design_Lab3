@@ -43,6 +43,7 @@ function delete_tr(obj) {
     var idx = obj.parentNode.rowIndex;
     $('table')[0].deleteRow(idx);
     upload();
+    rowIndex = -1;
 }
 
 
@@ -130,6 +131,7 @@ function add_tr(obj) {
     type.value = 'Integer';
     type_changed();
     upload();
+    rowIndex = -1;
 }
 
 
@@ -142,7 +144,7 @@ function process_click(e) {
 }
 
 
-var rowIndex;   // Index of row we editing
+var rowIndex = -1;   // Index of row we editing
 // Copy right data from edited row to lower
 function prepare_for_edit(obj) {
     var dropList = $('.left');
@@ -158,34 +160,36 @@ function prepare_for_edit(obj) {
 
 // Edits row in table
 function edit_tr(obj) {
-    var type = $('.left')[0];
-    var table = $('table')[0];
+    if (rowIndex != -1) {
+        var type = $('.left')[0];
+        var table = $('table')[0];
 
-    var stringValue;
-    var can_edit_row = false;
+        var stringValue;
+        var can_edit_row = false;
 
-    if (type.value == 'Integer') {
-        stringValue = $('.input_data')[0].value;
-        if (!isNaN(parseInt(stringValue))) {
-            can_edit_row = true;
+        if (type.value == 'Integer') {
+            stringValue = $('.input_data')[0].value;
+            if (!isNaN(parseInt(stringValue))) {
+                can_edit_row = true;
+            }
+        } else if (type.value == 'String') {
+            stringValue = $('.input_data')[0].value;
+            if (stringValue != '')
+                can_edit_row = true;
+        } else if (type.value == 'From List') {
+            var input_label = $('#right')[0];
+            stringValue = input_label.childNodes[1].value;
+            if (stringValue != '')
+                can_edit_row = true;
         }
-    } else if (type.value == 'String') {
-        stringValue = $('.input_data')[0].value;
-        if (stringValue != '')
-            can_edit_row = true;
-    } else if (type.value == 'From List') {
-        var input_label = $('#right')[0];
-        stringValue = input_label.childNodes[1].value;
-        if (stringValue != '')
-            can_edit_row = true;
-    }
 
-    if (can_edit_row) {
-        table.rows[rowIndex].cells[0].innerHTML = type.value;
-        table.rows[rowIndex].cells[1].innerHTML = stringValue;
-    }
+        if (can_edit_row) {
+            table.rows[rowIndex].cells[0].innerHTML = type.value;
+            table.rows[rowIndex].cells[1].innerHTML = stringValue;
+        }
 
-    type.value = 'Integer';
-    type_changed();
-    upload();
+        type.value = 'Integer';
+        type_changed();
+        upload();
+    }
 }
