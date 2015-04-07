@@ -5,21 +5,20 @@ function download() {
         url: file_name,
         dataType: "text",
         success: function (data) {
-            var _table = $("#main_table");
+            //var _table = $("#main_table");
+            var _table = $("#main_id");
             _table.empty();
             _table.append(data);
         }
     });
-
-    //type_changed();
-    //alert('called');
 }
 
 
 // Uploads table to server
 function upload() {
-    var xmlDoc = document.getElementsByTagName('table')[0].innerHTML;
-
+    //var xmlDoc = document.getElementsByTagName('table')[0].innerHTML;
+    var xmlDoc = $("#main_id")[0].innerHTML;
+    //alert(xmlDoc);
     var post_data = {
         'file_data': xmlDoc
     };
@@ -33,8 +32,6 @@ function upload() {
             return false;
         }
     });
-
-    //type_changed();
 }
 
 
@@ -44,6 +41,9 @@ function delete_tr(obj) {
     $('table')[0].deleteRow(idx);
     upload();
     rowIndex = -1;
+    $('.left')[0].value = 'Integer';
+    type_changed();
+    upload();
 }
 
 
@@ -78,7 +78,12 @@ function type_changed() {
         inputField.type = 'text';
         inputField.className = 'input_data';
         inputField.placeholder = 'Enter your data';
+        var str = inputField.outerHTML;
+
+        //alert(str);
+        //alert('12345');
         input_label.appendChild(inputField);
+        inputField.innerHTML = inputField.innerHTML.substr(0, inputField.innerHTML.length - 1) + '/>';
     }
     input_label.appendChild(firstChild);
 }
