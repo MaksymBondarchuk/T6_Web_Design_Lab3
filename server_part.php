@@ -14,4 +14,3 @@ if (isset($_POST["file_data"]))
     unlink($file_path);
     file_put_contents($file_path, $_POST["file_data"]);
 }
-
